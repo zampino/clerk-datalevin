@@ -1,0 +1,14 @@
+{:deps {io.github.nextjournal/clerk {:git/sha "b7207926bacb10e6af17075efd71df3363b74d21"}
+        datalevin/datalevin {:mvn/version "0.8.18"}
+        nrepl/nrepl {:mvn/version "1.0.0"}
+        org.clojure/clojure {:mvn/version "1.12.0-alpha4"}
+        org.clojure/data.csv {:mvn/version "1.0.1"}
+        cljmb/cljmb {:mvn/version "0.2.0"}}
+
+ :aliases
+ {:nextjournal/clerk {:extra-paths ["notebooks"]
+                      :exec-args {:index "notebooks/playground.clj"}}
+  :nextjournal/garden {:exec-fn ops/boot
+                       :extra-paths ["ops" "notebooks"]
+                       :jvm-opts ["--add-opens=java.base/java.nio=ALL-UNNAMED"
+                                  "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"]}}}
