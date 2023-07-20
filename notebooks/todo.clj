@@ -62,7 +62,8 @@
                                                                            {:recompute? true}
                                                                            (list 'add-task @text))))} "Add"]
         [:input.bg-amber-100.focus:outline-none {:on-change #(reset! text (.. % -target -value))
-                                                 :type "text" :placeholder "Enter a task…"}]])) nil)
+                                                 :placeholder "Enter a task…"
+                                                 :value @text :type "text"}]])) nil)
 
 (clerk/with-viewer tasks-viewer
   (mapv (partial clerk/with-viewer task-viewer) (tasks)))
@@ -70,12 +71,12 @@
 #_
 (comment
   d/get-conn
-  (fs/delete-tree "/tmp/storage")
-  (fs/list-dir "/tmp/storage")
+  (fs/delete-tree "/tmp/garden/storage/todo")
+  (fs/list-dir "/tmp/garden/storage/todo")
   (->> (d/q '[:find [?t ...] :where [?t :task/id]]
             (d/db conn))
        (map #(d/entity (d/db conn) %))
        (sort-by :db/created-at >)
        (map d/touch)
-       first
+
        ))
