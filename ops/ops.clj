@@ -1,5 +1,6 @@
 (ns ops
   (:require [nextjournal.clerk :as clerk]
+            [nextjournal.clerk.viewer :as viewer]
             [nextjournal.clerk.webserver :as webserver]
             [nrepl.server]))
 
@@ -20,6 +21,12 @@
 
   ;; hack to get have / go to notebook
   (reset! webserver/!doc {:nav-path "/notebooks/todo"})
+
+  ;; disable header
+  (clerk/reset-viewers! (find-ns 'todo)
+                        (clerk/add-viewers [(assoc viewer/header-viewer
+                                                   :render-fn '(fn [_ _] [:div.mt-10]))]))
+  ;; boot clerk
   (clerk/serve! opts))
 
 (defn stop []
