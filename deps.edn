@@ -7,7 +7,7 @@
 
  :aliases
  {:nextjournal/clerk {:extra-paths ["notebooks"]
-                      :exec-args {:index "notebooks/playground.clj"}}
+                      :exec-args {:index "notebooks/todo.clj"}}
   :nextjournal/garden {:exec-fn ops/boot
                        :extra-paths ["ops" "notebooks"]
                        :jvm-opts ["--add-opens=java.base/java.nio=ALL-UNNAMED"

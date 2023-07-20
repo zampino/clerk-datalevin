@@ -1,5 +1,5 @@
 ;; # 🚸A datalevin todo list
-(ns roadmap
+(ns todo
   {:nextjournal.clerk/no-cache true}
   (:require [babashka.fs :as fs]
             [datalevin.core :as d]
