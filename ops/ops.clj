@@ -8,13 +8,14 @@
 
 (defn boot [opts]
   (reset! !nrepl (nrepl.server/start-server :bind "0.0.0.0" :port 6666))
-  ;; cannot create a concurrent connectionsk, this is caused by old container during re-deploy of a new version
+
+  ;; cannot create concurrent connections, e.g. caused by old container during re-deploy of a new version
   ;;
   ;; Execution error (ExceptionInfo) at nextjournal.clerk.eval/eval+cache! (eval.clj:155).
   ;; Execution error (LmdbNativeException$ConstantDerivedException) at org.lmdbjava.ResultCodeMapper/checkRc (ResultCodeMapper.java:114).
   ;; Platform constant error code: EAGAIN Resource temporarily unavailable (11)
   ;;
-  ;; see http://www.lmdb.tech/doc/
+  ;; see Caveats section at http://www.lmdb.tech/doc/
 
   #_
   (clerk/show! "notebooks/todo.clj")
