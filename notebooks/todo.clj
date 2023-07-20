@@ -13,15 +13,19 @@
   {:transform-fn clerk/mark-presented
    :render-fn '(fn [{:as m :task/keys [description completed? id]} _]
                  (println "task" (str id) completed?)
-                 [:div.mb-1.flex.bg-amber-200.border.border-amber-400.rounded-md.p-2
-                  [:div [:input.mt-2.ml-3 {:type :checkbox :checked (boolean completed?)
-                                 :class (str "appearance-none h-4 w-4 rounded bg-amber-300 border border-amber-400 relative"
-                                             "checked:border-amber-600 checked:bg-amber-600 checked:bg-no-repeat checked:bg-contain")
-                                 :on-change (fn [e]
-                                              (.then (nextjournal.clerk.render/clerk-eval
-                                                      {:recompute? true}
-                                                      (list 'update-task (str id) 'assoc :task/completed? (.. e -target -checked)))))}]]
-                  [:div.text-xl.ml-2.mb-0.font-sans description]])})
+                 [:div.mb-1.flex.bg-amber-200.border.border-amber-400.rounded-md.p-2.justify-between
+                  [:div.flex
+                   [:input.mt-2.ml-3.cursor-pointer {:type :checkbox :checked (boolean completed?)
+                                      :class (str "appearance-none h-4 w-4 rounded bg-amber-300 border border-amber-400 relative"
+                                                  "checked:border-amber-700 checked:bg-amber-700 checked:bg-no-repeat checked:bg-contain")
+                                      :on-change (fn [e]
+                                                   (.then (nextjournal.clerk.render/clerk-eval
+                                                           {:recompute? true}
+                                                           (list 'update-task (str id) 'assoc :task/completed? (.. e -target -checked)))))}]
+
+                   [:div.text-xl.ml-2.mb-0.font-sans description]]
+                  [:button.flex-end.mr-2.text-sm.text-amber-600.font-bold
+                   {:on-click #(nextjournal.clerk.render/clerk-eval {:recompute? true} (list 'remove-task (str id)))} "⛌"]])})
 
 (def tasks-viewer
   {:transform-fn (clerk/update-val (comp (partial mapv (partial clerk/with-viewer task-viewer)) deref))
@@ -54,7 +58,7 @@
 
 {::clerk/visibility {:code :show :result :hide}}
 
-;; …and here some moving parts (viewers hidden)
+;; …some datalevin machinery (viewers hidden)
 (def schema
   {:task/description {:db/valueType :db.type/string}
    :task/id {:db/valueType :db.type/uuid
@@ -90,6 +94,8 @@
 (reset! !tasks (tasks))
 
 #_(comment
+
+    (add-task "Develop over nREPL")
     (def id *1)
     d/get-conn
     (fs/delete-tree "/tmp/garden/storage/todo")
