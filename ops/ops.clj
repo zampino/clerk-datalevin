@@ -23,7 +23,7 @@
   (reset! webserver/!doc {:nav-path "/notebooks/todo"})
 
   ;; disable header
-  (clerk/reset-viewers! (find-ns 'todo)
+  (clerk/reset-viewers! 'todo
                         (clerk/add-viewers [(assoc viewer/header-viewer
                                                    :render-fn '(fn [_ _] [:div.mt-10]))]))
   ;; boot clerk
