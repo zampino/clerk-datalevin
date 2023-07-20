@@ -1,4 +1,4 @@
-;; # 🚸A datalevin todo list
+;; # 🚸 A todo list persisted in datalevin
 (ns todo
   {:nextjournal.clerk/no-cache true}
   (:require [babashka.fs :as fs]
@@ -14,7 +14,7 @@
    :task/completed? {:db/valueType :db.type/boolean}
    :task/category {:db/valueType :db.type/keyword}})
 
-(def conn (d/create-conn "/tmp/storage" schema {:auto-entity-time? true}))
+(def conn (d/create-conn "/tmp/garden/storage/todo" schema {:auto-entity-time? true}))
 
 (defn ->map [m] (into {} (remove (comp #{"db"} namespace key)) m))
 (defn tasks []
