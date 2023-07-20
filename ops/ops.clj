@@ -6,7 +6,7 @@
 
 (defn boot [opts]
   (reset! !nrepl (nrepl.server/start-server :bind "0.0.0.0" :port 6666))
-
+  #_
   (clerk/show! "notebooks/todo.clj")
   (clerk/serve! opts))
 
