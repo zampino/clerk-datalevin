@@ -6,7 +6,7 @@
 
 {::clerk/visibility {:code :hide :result :hide}}
 
-(declare tasks)
+(defonce !tasks (atom nil))
 
 (def task-viewer
   {:transform-fn clerk/mark-presented
@@ -26,7 +26,7 @@
                    {:on-click #(nextjournal.clerk.render/clerk-eval {:recompute? true} (list 'remove-task (str id)))} "⛌"]])})
 
 (def tasks-viewer
-  {:transform-fn (clerk/update-val (partial mapv (partial clerk/with-viewer task-viewer)))
+  {:transform-fn (clerk/update-val (comp (partial mapv (partial clerk/with-viewer task-viewer)) deref))
    :render-fn '(fn [coll opts] (into [:div] (nextjournal.clerk.render/inspect-children opts) coll))})
 
 {::clerk/visibility {:code :hide :result :show}}
@@ -53,7 +53,7 @@
          :placeholder "Enter text and press Enter…" :ref ref
          :value @text :type "text"}]])) nil)
 
-(clerk/with-viewer tasks-viewer (tasks))
+(clerk/with-viewer tasks-viewer !tasks)
 
 {::clerk/visibility {:code :show :result :hide}}
 
@@ -64,8 +64,7 @@
              :storage-dir "/tmp/garden/storage"
              :system "garden"}))
 
-(defonce db-setup
- (d/create-database client {:db-name "todo-datomic"}))
+(d/create-database client {:db-name "todo-datomic"})
 
 (def conn (d/connect client {:db-name "todo-datomic"}))
 
@@ -106,6 +105,8 @@
 
 (defn remove-task [id]
   (d/transact conn {:tx-data [[:db/retractEntity [:task/id (parse-uuid id)]]]}))
+
+(reset! !tasks (tasks))
 
 (comment
   (clerk/reset-viewers! :default (clerk/get-default-viewers))
