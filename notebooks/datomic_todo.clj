@@ -64,7 +64,8 @@
              :storage-dir "/tmp/garden/storage"
              :system "garden"}))
 
-(d/create-database client {:db-name "todo-datomic"})
+(defonce db-setup
+  (d/create-database client {:db-name "todo-datomic"}))
 
 (def conn (d/connect client {:db-name "todo-datomic"}))
 
@@ -85,6 +86,9 @@
    {:db/ident :task/category
     :db/valueType :db.type/keyword
     :db/cardinality :db.cardinality/one}])
+
+(defonce schema-setup
+  (d/transact conn {:tx-data schema}))
 
 (defn add-task [text]
   (d/transact conn {:tx-data [{:task/id (random-uuid)
