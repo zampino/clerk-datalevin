@@ -4,11 +4,15 @@
         nrepl/nrepl {:mvn/version "1.0.0"}
         org.clojure/clojure {:mvn/version "1.12.0-alpha4"}
         org.clojure/data.csv {:mvn/version "1.0.1"}
-        cljmb/cljmb {:mvn/version "0.2.0"}}
+        cljmb/cljmb {:mvn/version "0.2.0"}
+
+        ;; Datomic local https://docs.datomic.com/cloud/datomic-local.html#durability
+        com.datomic/local {:mvn/version "1.0.267"}}
 
  :aliases
  {:nextjournal/clerk {:extra-paths ["notebooks"]
-                      :exec-args {:index "notebooks/todo.clj"}}
+                      :exec-args {:paths ["notebooks/dtlv_todo.clj"
+                                          "notebooks/datomic_todo.clj"]}}
   :nextjournal/garden {:exec-fn ops/boot
                        :extra-paths ["ops" "notebooks"]
                        :jvm-opts ["-Dclojure.main.report=stdout"

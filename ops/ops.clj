@@ -21,10 +21,11 @@
   (clerk/show! "notebooks/todo.clj")
 
   ;; hack to get have / go to notebook
-  (reset! webserver/!doc {:nav-path "/notebooks/todo"})
+  (reset! webserver/!doc {:nav-path "'nextjournal.clerk.index"})
 
-  ;; disable header
-  (clerk/reset-viewers! 'todo
+  ;; disable header ?
+  #_
+  (clerk/reset-viewers! :default
                         (clerk/add-viewers [(assoc viewer/header-viewer
                                                    :render-fn '(fn [_ _] [:div.mt-10]))]))
   ;; boot clerk

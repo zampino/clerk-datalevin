@@ -1,5 +1,5 @@
 ;; # 🚸 A todo list persisted in datalevin
-(ns todo
+(ns dtlv-todo
   {:nextjournal.clerk/no-cache true}
   (:require [babashka.fs :as fs]
             [datalevin.core :as d]
@@ -7,7 +7,7 @@
 
 {::clerk/visibility {:code :hide :result :hide}}
 
-(def !tasks (atom nil))
+(defonce !tasks (atom nil))
 
 (def task-viewer
   {:transform-fn clerk/mark-presented
@@ -66,7 +66,7 @@
    :task/completed? {:db/valueType :db.type/boolean}
    :task/category {:db/valueType :db.type/keyword}})
 
-(def conn (d/create-conn "/tmp/garden/storage/todo" schema {:auto-entity-time? true}))
+(def conn (d/create-conn "/tmp/garden/storage/todo-dtlv" schema {:auto-entity-time? true}))
 
 (defn ->map [m] (into {} (remove (comp #{"db"} namespace key)) m))
 
